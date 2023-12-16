@@ -3,6 +3,7 @@ package routes
 import (
 	"encoding/json"
 	"fmt"
+	"loghawk/parser"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -24,8 +25,9 @@ func GetIngestRoutes(db *gorm.DB, router *gin.Engine) {
 			fmt.Println("Err > ", err)
 		}
 
-		fmt.Println("Recieved logs from tag : ", data["tag"])
+		fmt.Println("Recieved logs from tag : ", data["tag"], data["log"])
 
+		parser.ParseLogs(data["tag"].(string), data["log"].(string))
 		c.JSON(http.StatusOK, gin.H{"msg": "ok"})
 	})
 }

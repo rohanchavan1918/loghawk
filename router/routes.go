@@ -12,7 +12,6 @@ func GetRoutes(db *gorm.DB) *gin.Engine {
 	router := gin.Default()
 	router.Use(cors.Default())
 
-	GetProductRoutes(db, router)
 	GetTagRoutes(db, router)
 	GetTagRuleRoutes(db, router)
 	GetIngestRoutes(db, router)

@@ -48,7 +48,7 @@ func GetTagRoutes(db *gorm.DB, router *gin.Engine) {
 	router.GET("/tags/:id", func(c *gin.Context) {
 		id := c.Param("id")
 		var tag models.Tag
-		db.First(&tag, "id = ?", id)
+		db.First(&tag, "id = ?", id).Preload("Rules")
 
 		if tag.ID == 0 {
 			c.JSON(http.StatusNotFound, gin.H{"error": "tag not found"})
