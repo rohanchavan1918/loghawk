@@ -19,15 +19,20 @@ func GetIngestRoutes(db *gorm.DB, router *gin.Engine) {
 			return
 		}
 
-		var data map[string]interface{}
+		var data map[string]string
 		err := json.Unmarshal(input, &data)
 		if err != nil {
 			fmt.Println("Err > ", err)
 		}
 
+		fmt.Println("Data > ", data)
 		fmt.Println("Recieved logs from tag : ", data["tag"], data["log"])
 
-		parser.ParseLogs(data["tag"].(string), data["log"].(string))
+		log, dataOk := data["log"]
+		if dataOk {
+			parser.ParseLogs(data["tag"], log)
+		}
+
 		c.JSON(http.StatusOK, gin.H{"msg": "ok"})
 	})
 }

@@ -10,17 +10,24 @@ import (
 )
 
 func ParseLogs(tag string, log string) {
+	fmt.Println("Started Parsing log for tag > ", tag)
 	tagData, err := GetTagRules(tag)
+	fmt.Println("TagData > ", tagData)
 	if err != nil {
 		fmt.Printf("Failed to get tag Rules ")
 	}
 	if ShouldSendAlert(tagData.Rules, log) {
+		fmt.Println("Rule matched for tag > ", tag)
 		SendSlackAlert("Alert for : "+log, tagData.Name, tagData.SlackUrl)
+	} else {
+		fmt.Println("No rules matched.")
 	}
 }
 
 func ShouldSendAlert(tagRules []models.TagRule, log string) bool {
+	fmt.Println("Evaluating if data should be sent or not.")
 	for _, rule := range tagRules {
+		fmt.Println("Parsing Rule > ", rule)
 		if rule.MatchType == "contains" {
 			if CheckContains(rule.MatchValue, log) {
 				fmt.Println("CheckContains requested ")
@@ -47,12 +54,13 @@ func GetTagRules(tagName string) (models.Tag, error) {
 	// Get all rules for tags for that tag
 
 	db := config.DB
-	tag := models.Tag{Name: tagName}
+	tag := models.Tag{Tag: tagName}
+	fmt.Println("Tag >>>> ", tag)
 	result := db.Preload("Rules").First(&tag)
 	if result.Error != nil {
 		return models.Tag{}, errors.New("tag does not exist")
 	}
-	return models.Tag{}, nil
+	return tag, nil
 }
 
 func CheckContains(match_value, log string) bool {
@@ -62,7 +70,8 @@ func CheckContains(match_value, log string) bool {
 
 	// if len(orMatches) && len(andMatches)
 
-	// fmt.Println(len(orMatches), len(andMatches))
+	fmt.Println("Checking if ", match_value, " is present in ", log)
+
 	return strings.Contains(log, match_value)
 }
 

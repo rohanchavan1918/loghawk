@@ -24,6 +24,7 @@ type Text struct {
 }
 
 func SendSlackAlert(msg string, functionName string, alertUrl string) {
+	fmt.Println("Sending slack alert : " + functionName)
 	var AlertFunctionTitle string
 	if functionName != "" {
 		AlertFunctionTitle = "*[" + functionName + "]*"
