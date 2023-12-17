@@ -23,9 +23,13 @@ func GetLogRoutes(db *gorm.DB, router *gin.Engine) {
 		defer mu.Unlock()
 		rand.Seed(time.Now().UnixNano())
 
-		LogsParsed := rand.Intn(176)
-		errorCount := rand.Intn(12)
-		AlertsSent := errorCount - rand.Intn(3)
+		// LogsParsed := rand.Intn(176)
+		// errorCount := rand.Intn(12)
+		// AlertsSent := errorCount - rand.Intn(3)
+
+		LogsParsed := 1599
+		errorCount := 56
+		AlertsSent := 54
 
 		c.JSON(http.StatusOK, gin.H{"logs_parsed": LogsParsed, "error_count": errorCount, "alerts_sent": AlertsSent})
 
