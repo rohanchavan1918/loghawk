@@ -33,6 +33,7 @@
 package main
 
 import (
+	"fmt"
 	"loghawk/config"
 	"loghawk/models"
 	routes "loghawk/router"
@@ -45,7 +46,12 @@ func main() {
 	}
 
 	// Run DB Migrations
-	db.AutoMigrate(&models.Product{}, &models.Tag{}, &models.TagRule{})
+	merr := db.AutoMigrate(&models.Product{}, &models.Tag{}, &models.TagRule{}, &models.Log{})
+	if err != nil {
+		fmt.Println("Error while running migrations > ", merr)
+	}
+
 	router := routes.GetRoutes(db)
+
 	router.Run("0.0.0.0:8080")
 }

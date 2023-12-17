@@ -15,6 +15,7 @@ func GetRoutes(db *gorm.DB) *gin.Engine {
 	GetTagRoutes(db, router)
 	GetTagRuleRoutes(db, router)
 	GetIngestRoutes(db, router)
+	GetLogRoutes(db, router)
 
 	// Final router
 	return router

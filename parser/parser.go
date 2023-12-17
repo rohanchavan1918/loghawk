@@ -7,6 +7,7 @@ import (
 	"loghawk/models"
 	"regexp"
 	"strings"
+	"time"
 )
 
 func ParseLogs(tag string, log string) {
@@ -19,8 +20,19 @@ func ParseLogs(tag string, log string) {
 	if ShouldSendAlert(tagData.Rules, log) {
 		fmt.Println("Rule matched for tag > ", tag)
 		SendSlackAlert("Alert for : "+log, tagData.Name, tagData.SlackUrl)
+		SaveLog(log, int(tagData.ID))
+
 	} else {
 		fmt.Println("No rules matched.")
+	}
+}
+
+func SaveLog(log string, tagId int) {
+	logData := models.Log{Message: log, TagID: uint(tagId), CreatedAt: time.Now()}
+	if err := config.DB.Create(&logData).Error; err != nil {
+		fmt.Println("Failed to add logs : ", err)
+	} else {
+		fmt.Println("Log Saved successfully.")
 	}
 }
 
@@ -55,7 +67,6 @@ func GetTagRules(tagName string) (models.Tag, error) {
 
 	db := config.DB
 	tag := models.Tag{Tag: tagName}
-	fmt.Println("Tag >>>> ", tag)
 	result := db.Preload("Rules").First(&tag)
 	if result.Error != nil {
 		return models.Tag{}, errors.New("tag does not exist")

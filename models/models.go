@@ -21,9 +21,9 @@ type Tag struct {
 	Tag         string    `json:"tag" binding:"required"`
 	SlackUrl    string    `json:"slack_url" binding:"required"`
 	Rules       []TagRule `json:"tag_rules"`
-
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	Logs        []Log     `gorm:"foreignKey:ID"`
+	CreatedAt   time.Time
+	UpdatedAt   time.Time
 }
 
 type TagRule struct {
