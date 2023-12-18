@@ -1,0 +1,128 @@
+
+<div class="main-content">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="title">{{tagID ? 'Update': 'Add'}} Tag</h5>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="addTagForm">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Name</label>
+                  <input type="text" class="form-control" placeholder="Name" formControlName="name">
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Tag</label>
+                  <input type="text" class="form-control" placeholder="Tag" formControlName="Tag">
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>SlackUrl</label>
+                  <input type="text" class="form-control" placeholder="SlackUrl" formControlName="SlackUrl">
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Description</label>
+                  <textarea rows="4" cols="80" class="form-control" placeholder="Here can be your description" formControlName="description"></textarea>
+                </div>
+              </div>
+              <div class="col-md-12 my-4">
+                <div class="form-group text-center mb-0">
+                    <button *ngIf="!tagID" [disabled]="addTagForm.invalid"  (click)="onSubmitForm()"  type="button" type="submit" class="btn btn-submit">Submit</button>
+                    <button *ngIf="tagID" [disabled]="addTagForm.invalid"  (click)="onUpdateForm()"  type="button" type="submit" class="btn btn-submit">Update</button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="title">Add Profile</h5>
+        </div>
+        <div class="card-body">
+          <form>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Tag</label>
+                  <input type="text" class="form-control" placeholder="Tag">
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>MatchType   </label>
+                  <select class="form-control">
+                    <option>MatchType </option>
+                    <option>MatchType </option>
+                    <option>MatchType </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Priotiry  </label>
+                  <select class="form-control">
+                    <option>Priotiry</option>
+                    <option>Priotiry</option>
+                    <option>Priotiry</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-12 my-4">
+                <div class="form-group text-center mb-0">
+                    <button type="button" class="btn btn-submit">Submit</button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card card-user">
+        <div class="image">
+          <img src="../assets/img/bg5.jpg" alt="...">
+        </div>
+        <div class="card-body">
+          <div class="author">
+            <a href="#">
+              <img class="avatar border-gray" src="../assets/img/mike.jpg" alt="...">
+              <h5 class="title">Mike Andrew</h5>
+            </a>
+            <p class="description">
+              michael24
+            </p>
+          </div>
+          <p class="description text-center">
+            "Lamborghini Mercy
+            <br> Your chick she so thirsty
+            <br> I'm in that two seat Lambo"
+          </p>
+        </div>
+        <hr>
+        <div class="button-container">
+          <button href="#" class="btn btn-neutral btn-icon btn-round btn-lg">
+            <i class="fab fa-facebook-f"></i>
+          </button>
+          <button href="#" class="btn btn-neutral btn-icon btn-round btn-lg">
+            <i class="fab fa-twitter"></i>
+          </button>
+          <button href="#" class="btn btn-neutral btn-icon btn-round btn-lg">
+            <i class="fab fa-google-plus-g"></i>
+          </button>
+        </div>
+      </div>
+    </div> -->
+  </div>
+</div>

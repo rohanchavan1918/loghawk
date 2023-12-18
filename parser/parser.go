@@ -11,9 +11,7 @@ import (
 )
 
 func ParseLogs(tag string, log string) {
-	fmt.Println("Started Parsing log for tag > ", tag)
 	tagData, err := GetTagRules(tag)
-	fmt.Println("TagData > ", tagData)
 	if err != nil {
 		fmt.Printf("Failed to get tag Rules ")
 	}
@@ -21,7 +19,6 @@ func ParseLogs(tag string, log string) {
 		fmt.Println("Rule matched for tag > ", tag)
 		SendSlackAlert("Alert for : "+log, tagData.Name, tagData.SlackUrl)
 		SaveLog(log, int(tagData.ID))
-
 	} else {
 		fmt.Println("No rules matched.")
 	}
@@ -112,3 +109,24 @@ func CheckRegex(match_value, log string) bool {
 	re := regexp.MustCompile(match_value)
 	return re.MatchString(log)
 }
+
+type ParserLog struct {
+	MatchValue string
+	Log        string
+}
+
+// func CheckCustom(match_value, log string) bool {
+// 	parserLog := ParserLog{MatchValue: match_value, Log: log}
+
+// 	dataCtx := ast.NewDataContext()
+// 	dataCtx.Add("log", parserLog)
+
+// 	knowledgeLibrary := ast.NewKnowledgeLibrary()
+// 	ruleBuilder := builder.NewRuleBuilder(knowledgeLibrary)
+
+// 	err := ruleBuilder.BuildRuleFromResource("MtRules", "0.0.1", resource)
+// 	if err != nil {
+// 		fmt.Println("Got rule error > ", err)
+// 	}
+
+// }

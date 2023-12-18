@@ -1,0 +1,180 @@
+
+<div class="main-content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header d-flex align-items-center justify-content-between">
+          <h4 class="card-title">Tags</h4>
+          <!-- {{tagsData  | json
+          }} -->
+          <button type="button" [routerLink]="['/tags-form']" class="btn btn-primary">Add</button>
+        </div>
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <th >
+                  Name
+                </th>
+                <th>
+                  Description
+                </th>
+                <th>
+                  Tag
+                </th>
+                <th>
+                 Slack Url 
+                </th>
+                <th>
+                  Action
+                </th>
+              </thead>
+              <tbody>
+                <tr *ngFor="let eachItem of tagsData">
+                  <td>
+                    {{eachItem?.Name || '-'}}
+                  </td>
+                  <td>
+                    <span class="text-ellipsis">  {{eachItem?.description || '-'}}</span>
+                  </td>
+                  <td>
+                    {{eachItem?.tag || '-'}}
+                  </td>
+                  <td>
+                    <div class="d-flex align-items-center">
+                        <span class="text-ellipsis" title="{{eachItem?.slack_url || '-'}}" >  {{eachItem?.slack_url || '-'}} </span>
+                        <a style="cursor: pointer;" (click)="copyText(eachItem?.slack_url)" ><i class="fa fa-clone ml-2" aria-hidden="true"></i></a>
+                    </div>
+                   
+                  </td>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <button type="button" (click)="tagRules = eachItem?.tag_rules; tagId = eachItem?.ID" class="btn btn-success btn-sm ml-1"  data-toggle="modal" data-target="#exampleModal"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                      <button type="button" class="btn btn-primary btn-sm mr-1 ml-1" [routerLink]="['/tags-form',eachItem?.ID]"> <i class="fa fa-pencil" aria-hidden="true"></i></button>
+                      <button type="button"  data-toggle="modal" data-target="#deleteModal" (click)="deleteId = eachItem?.ID" class="btn btn-danger btn-sm ml-1"><i class="fa fa-trash" aria-hidden="true" ></i></button>
+                    </div>
+                  </td>
+                </tr>
+                
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="d-flex w-100 align-items-center justify-content-between">
+          <h5 class="modal-title">Tag Rules</h5>
+          <button type="button" (click)="showForm = !showForm" class="btn btn-primary">{{!showForm ? 'Add Rule' : 'Back' }}</button>
+        </div>
+        <button type="button" class="close2" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body p-0">
+        <div *ngIf="!showForm" class="table-responsive">
+          <table class="table">
+            <thead>
+              <th>
+                Match Type
+              </th>
+              <th>
+                Match Value
+              </th>
+              <th>
+                Priority
+              </th>
+              <th>
+                Action
+              </th>
+            </thead>
+            <tbody>
+              <tr *ngFor="let eachItem of tagRules">
+                <td>
+                  {{eachItem?.match_type || '-'}}
+                </td>
+                <td>
+                  {{eachItem?.match_value || '-'}}
+                </td>
+                <td>
+                  {{eachItem?.priority || '-'}}
+                </td>
+                <td>
+                  <div class="d-flex align-items-center">
+                    <!-- <button  type="button" class="btn btn-primary btn-sm ml-1"><i class="fa fa-pencil" aria-hidden="true"></i></button> -->
+                    <button type="button" class="btn btn-danger btn-sm ml-1"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                  </div>
+                </td>
+              </tr>
+              <tr *ngIf="tagRules?.length == 0">
+                <td colspan="4"><h1>No Data Found</h1></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div *ngIf="showForm" class="form p-3" [formGroup]="addTagRuleForm">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Match Type</label>
+                <select  formControlName="matchType" class="form-control">
+                  <option *ngFor="let enum of TestEnum | keyvalue" [value]=" enum.key">{{ enum.value}}</option>
+                </select>
+              </div>
+            </div>
+            <div *ngIf="addTagRuleForm.controls['matchType'].value != 'custom'" class="col-md-12">
+              <div class="form-group">
+                <label>Match Value</label>
+                <input formControlName="matchValue" type="text" class="form-control" placeholder="Match Value" required name="match_value">
+              </div>
+            </div>
+            <div *ngIf="addTagRuleForm.controls['matchType'].value == 'custom'" class="col-md-12">
+              <div class="form-group">
+                <label>Match Value</label>
+                <textarea rows="4" cols="80" class="form-control" placeholder="Match Value" formControlName="matchValue"></textarea>
+              </div>
+            </div>
+            <div  class="col-md-12">
+              <div class="form-group">
+                <label>Priority</label>
+                <select formControlName="priority" class="form-control">
+                  <option *ngFor="let eachPriority of [].constructor(10); let i = index" [value]="i+1">{{i+1}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-12 mt-4">
+              <div class="form-group  text-center">
+                <button type="button" [disabled]="addTagRuleForm.invalid" (click)="submitMatchTypeForm()" class="btn btn-primary">Submit</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-body p-4">
+        <p class="text-center">Are you sure you want to delete</p>
+        <div class="d-flex align-items-center justify-content-center">
+          <button (click) = "deleteTag(deleteId)" data-dismiss="modal" type="button" class="btn btn-primary mr-1">Yes</button>
+          <button  data-dismiss="modal" type="button" class="btn btn-danger ml-2">No</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
